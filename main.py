@@ -1,63 +1,32 @@
+from graph import Graph
 class TrainRoutes:
     def __init__(self, adjacency_list):
-        self.locations = set()
-        self.adjacency_list = adjacency_list
+        self.routes_graph = Graph(adjacency_list)
 
-        # generate set of vertices
-        for (start, end, dist) in adjacency_list:
-            self.locations.add(start)
-            self.locations.add(end)
+    def shortestPath(self, source, target=None):
+        if (source == target):
+            # Shortest round-trip requested
+            adjacency_dict = self.routes_graph.getAdjacencyDict()
+            edge_weight_dict = self.routes_graph.getEdgeWeightDict()
+            min_dist = float('inf')
+            for adj_vert in adjacency_dict[source]:
+                dist_adj_to_source = self.routes_graph.dijkstra(adj_vert, target)[0][target]
+                total_dist = dist_adj_to_source + edge_weight_dict[(source, adj_vert)]
+                if (total_dist < min_dist):
+                    min_dist = total_dist
+            return min_dist
 
-    def dijkstra(self, start):
-        verticies = self.locations.copy()
+        return self.routes_graph.dijkstra(source, target)[0][target]
 
-        dist = {}
-        prev = {}
-        for vertex in verticies:
-            dist[vertex] = float("inf")
-            prev[vertex] = None
-        dist[start] = 0
+    def distPath(self, path):
+        return self.routes_graph.getDistPath(path)
 
-        # While set of vertices is not empty
-        while len(verticies) != 0:
-            min_vert = self._minDist(dist, verticies)
-
-            verticies.remove(min_vert)
-
-            for (start, end, dist_adj) in self.adjacency_list:
-                # only look at those that are adjacent to min_vert
-                if start != min_vert:
-                    continue
-                temp = dist[min_vert] + dist_adj
-                if temp < dist[end]:
-                    dist[end] = temp
-                    prev[end] = min_vert
-        return (dist, prev)
-    
-    def getDistPath(self, path):
-        '''
-        @param: path should have hyphen separated points. e.g A-B-D-G
-        '''
-        list_path = path.split('-')
-        
-        for i in range(len(list_path)-1):
-            start, end = list_path[i], list_path[i+1]
-            
-        return 0
-
-    def _minDist(self, dict_distances, vertices):
-        min_dist = float("inf")
-        min_vert = None
-        for vertex in vertices:
-            if (dict_distances[vertex] < min_dist):
-                min_dist = dict_distances[vertex]
-                min_vert = vertex
-        return min_vert
+    def numDiffPaths(self, start, end, min_stops=0, max_stops=None, max_dist=None):
+        return self.routes_graph.getNumDiffPaths(start, end, min_stops, max_stops, max_dist)
 
 '''
     Returns a list of strings.
 '''
-
 
 def readFile(filename):
     list_strings = []
@@ -75,22 +44,14 @@ def generateAdjacencyList(filename="train-graph-1.txt"):
         list_3tuple.append((string[0], string[1], float(string[2:])))
     return list_3tuple
 
-
-def getDistPath(path):
-    pass
-
-
-def getNumDiffPaths(start, end, min_stops, max_stops):
-    pass
-
-
-def findShortestPath(start, end):
-    pass
-
-
 def main():
     train_routes = TrainRoutes(generateAdjacencyList())
-    print(train_routes.dijkstra('A'))
+    print(train_routes.shortestPath('A', 'C'))
+    print(train_routes.shortestPath('B', 'B'))
+    print(train_routes.distPath("A-E-D"))
+    print(train_routes.numDiffPaths('A', 'C', min_stops=4, max_stops=4))
+    temp = train_routes.numDiffPaths('C', 'C', max_dist=30)
+    print(list(map(lambda x: ("".join(x), train_routes.distPath(x)), temp)))
 
 if __name__ == "__main__":
     main()
