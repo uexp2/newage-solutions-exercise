@@ -16,6 +16,5 @@ def main():
     print("9.  The length of the shortest route in terms of distance from B to B:          ", train_routes.shortestPath('B', 'B'))
     print("10. The number of different routes from C to C with a distance of less than 30: ", train_routes.numDiffPaths('C', 'C', max_dist=30))
 
-
 if __name__ == "__main__":
     main()
