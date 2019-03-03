@@ -94,7 +94,7 @@ class Graph:
                 return -1
         return total_distance
 
-    def getNumDiffPaths(self, start, end, min_len=0, max_len=None, max_weight=None):
+    def getAllPathsBetween(self, start, end, min_len=0, max_len=None, max_weight=None):
         '''
             If both max_len and max_weight are None, then max_len is set to number of 
             vertices in graph.

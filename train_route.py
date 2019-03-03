@@ -34,6 +34,5 @@ class TrainRoutes:
         return self.routes_graph.getDistPath(path)
 
     def numDiffPaths(self, start, end, min_stops=0, max_stops=None, max_dist=None):
-        all_paths = self.routes_graph.getNumDiffPaths(start, end, min_stops, max_stops, max_dist)
-        # print(list(map(lambda x: "".join(x), all_paths)))
+        all_paths = self.routes_graph.getAllPathsBetween(start, end, min_stops, max_stops, max_dist)
         return len(all_paths)
