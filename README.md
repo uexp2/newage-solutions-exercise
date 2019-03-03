@@ -7,8 +7,14 @@ from train_route import TrainRoutes
 from simple_util import generateAdjacencyList
 
 def main():
-    adjacency_list = generateAdjacencyList("your_file_here.txt")
+    adjacency_list = generateAdjacencyList("train-graph.txt")
     train_routes = TrainRoutes(adjacency_list)
+    print("The Distance of the route A-B-C:", train_routes.distPath("A-B-C"))
+```
+
+Output:
+```
+The Distance of the route A-B-C: 9.0
 ```
 
 ### Structure
@@ -22,18 +28,18 @@ I felt it was best to separate it to allow it to be more modular and extendable.
 
 There are three major methods and two utility methods.
 
-The three major methods are: *dijkstra(), getDistPath(), and getAllPathsBetween()*
+The three major methods are: *dijkstra(), getWeightPath(), and getAllPathsBetween()*
 
 The two utility methods are: *modGraph() and modUndo()*
 
 The dijkstra method is the traditional lowest cost path from a source to a target in a directed weighted graph. This
 function is minimally modified to be able to exit early if the target vertex is reached
 
-The getDistPath method takes a path and returns the weight of the path if the entirety of the path exists
+The getWeightPath method takes a path and returns the weight of the path if the entirety of the path exists
 within the graph. If no such path exists, it returns -1. Functionally, this simply looks at each adjacent
 pair of nodes and adds up the weight of the corresponding edge.
 
-The getAllPathsBetween() method is a modified Breadth First Search. In this modification visited vertices are no longer
+The getAllPathsBetween method is a modified Breadth First Search. In this modification visited vertices are no longer
 marked visited. Since vertices are no longer marked visited there needed to be a new way to reduce the queue without missing
 potential paths. The solution I developed is create a dictionary whose keys are verticies that mapped to a set of paths
 whose final destination is the key. 
@@ -43,7 +49,7 @@ whose final destination is the key.
 ```
 This solution allowed me to keep track of paths that have been generated, systematically generate new paths, and easily 
 prevent duplication of paths. With the help of the previously mentioned dictionary the queue is only appended to if 
-at least one new path was generated. And of the newly generated paths at least one path is within the max stops or max 
+at least one new path was generated. And of the newly generated paths at least one path is within the max path length or max 
 path weight bound. Together, these modificaitons of BFS allows getAllPathsBetween to accurately and efficiently generated
 all possible paths between two points bounded by max path length or max path weight.
 
@@ -68,7 +74,7 @@ dijkstras requires a modification in the following way. Find all inward edges to
 edges to also point towards an artificial edge. Then call dijkstras to find the shortest path from the original source to 
 the artificial target. This allows for the discovery of the shortest round-trip.
 
-The distPath method modifies the output of getDistPath method of Graph. In TrainRoutes if a path does not exists within
+The distPath method modifies the output of getWeightPath method of Graph. In TrainRoutes if a path does not exists within
 the graph disPath returns "NO SUCH ROUTE" instead of -1.
 
 The numDiffPaths method simply calls the getAllPathsBetween method of Graph but only returns the number of different paths, not
