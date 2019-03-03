@@ -1,10 +1,12 @@
 from train_route import TrainRoutes
-from simple_util import generateAdjacencyList 
+from simple_util import generateAdjacencyList
 
 networks_directory = "./route-networks"
 
+
 def testComplextRoute():
-    adjacency_list = generateAdjacencyList(networks_directory + "/network-1.txt")
+    adjacency_list = generateAdjacencyList(
+        networks_directory + "/network-1.txt")
     train_routes = TrainRoutes(adjacency_list)
 
     all_pass = []
@@ -55,8 +57,10 @@ def testComplextRoute():
 
     return all_pass
 
+
 def testDisconnectedNetwork():
-    adjacency_list = generateAdjacencyList(networks_directory + "/disconnected-train-network.txt")
+    adjacency_list = generateAdjacencyList(
+        networks_directory + "/disconnected-train-network.txt")
     train_routes = TrainRoutes(adjacency_list)
 
     all_pass = []
@@ -73,7 +77,7 @@ def testDisconnectedNetwork():
     expect = 4
     ret = train_routes.distPath("D-E")
     all_pass.append(expect == ret)
-    
+
     expect = 'NO SUCH ROUTE'
     ret = train_routes.distPath("B-D")
     all_pass.append(expect == ret)
@@ -135,7 +139,7 @@ def testDisconnectedNetwork():
     expect = 2
     ret = train_routes.numDiffPaths("A", "A", max_dist=30)
     all_pass.append(expect == ret)
-    
+
     expect = 3
     ret = train_routes.numDiffPaths("A", "A", max_dist=31)
     all_pass.append(expect == ret)
@@ -159,8 +163,10 @@ def testDisconnectedNetwork():
 
     return all_pass
 
+
 def testOneWayNetwork():
-    adjacency_list = generateAdjacencyList(networks_directory + "/connected-by-one-way.txt")
+    adjacency_list = generateAdjacencyList(
+        networks_directory + "/connected-by-one-way.txt")
     train_routes = TrainRoutes(adjacency_list)
 
     all_pass = []
@@ -217,6 +223,7 @@ def testOneWayNetwork():
 
     return all_pass
 
+
 def testTwoCylesOneOneway():
     path_to_network = networks_directory + "/two-cycles-with-one-oneway.txt"
     adjacency_list = generateAdjacencyList(path_to_network)
@@ -256,6 +263,7 @@ def testTwoCylesOneOneway():
 
     return all_pass
 
+
 def testOneAlternatePath():
     path_to_network = networks_directory + "/one-alternate-path.txt"
     adjacency_list = generateAdjacencyList(path_to_network)
@@ -286,7 +294,7 @@ def testOneAlternatePath():
     all_pass.append(expect == ret)
 
     expect = 1
-    ret = train_routes.numDiffPaths("A", "E", min_stops=4,max_stops=4)
+    ret = train_routes.numDiffPaths("A", "E", min_stops=4, max_stops=4)
     all_pass.append(expect == ret)
 
     # Dist of path
@@ -304,12 +312,14 @@ def testOneAlternatePath():
 
     return all_pass
 
+
 def runTests():
     print(testComplextRoute())
     print(testDisconnectedNetwork())
     print(testOneWayNetwork())
     print(testTwoCylesOneOneway())
     print(testOneAlternatePath())
-    
+
+
 if __name__ == "__main__":
     runTests()

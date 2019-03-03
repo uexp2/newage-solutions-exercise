@@ -7,6 +7,7 @@ def readFile(filename):
     file.close()
     return list_strings
 
+
 def generateAdjacencyList(filename):
     list_3tuple = []
     for string in readFile(filename):

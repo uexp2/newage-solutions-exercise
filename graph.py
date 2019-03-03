@@ -6,7 +6,7 @@ class Graph:
     def __init__(self, adjacency_list):
         '''
         @param: adjacency_list must be a list of tuples, each tuple
-        with minimum length of 3. First two elements of tuple must 
+        with minimum length of 3. First two elements of tuple must
         be immutable. Third element a Number
         '''
 
@@ -33,7 +33,8 @@ class Graph:
     def dijkstra(self, source, target=None):
         verticies = self.verticies.copy()
 
-        if (source not in verticies or (target != None and target not in verticies)):
+        if (source not in verticies or
+           (target is not None and target not in verticies)):
             raise NonExistantVertex(
                 'Source or Target vertex does not exist in graph')
 
@@ -67,10 +68,7 @@ class Graph:
         min_dist = float("inf")
         min_vert = None
         for vertex in vertices:
-            if (min_vert == None):
-                min_dist = dict_distances[vertex]
-                min_vert = vertex
-            if (dict_distances[vertex] < min_dist):
+            if (dict_distances[vertex] <= min_dist):
                 min_dist = dict_distances[vertex]
                 min_vert = vertex
         return min_vert
@@ -94,18 +92,21 @@ class Graph:
                 return -1
         return total_distance
 
-    def getAllPathsBetween(self, start, end, min_len=0, max_len=None, max_weight=None):
+    def getAllPathsBetween(self,
+                           start, end,
+                           min_len=0, max_len=None,
+                           max_weight=None):
         '''
-            If both max_len and max_weight are None, then max_len is set to number of 
-            vertices in graph.
-            If both max_len and max_weight are given, then both will be satisfied
+        If both max_len and max_weight are None, then max_len is set to number
+        of vertices in graph.
+        If both max_len and max_weight are given, then both will be satisfied.
         '''
-        if (max_len == None and max_weight == None):
+        if (max_len is None and max_weight is None):
             # When no upper-bounds are given
             max_len = len(self.verticies)
-        if (max_len == None and max_weight != None):
+        if (max_len is None and max_weight is not None):
             max_len = float('inf')
-        if (max_len != None and max_weight == None):
+        if (max_len is not None and max_weight is None):
             max_weight = float('inf')
 
         if (start not in self.verticies or end not in self.verticies):
@@ -144,9 +145,10 @@ class Graph:
 
                     all_paths_too_long = all_paths_too_long and (
                         path_len > max_len or path_weight >= max_weight)
+
                     if (adj_vert == end
-                        and min_len <= path_len and path_len <= max_len
-                            and path_weight < max_weight):  # strictly less than as per instruction
+                            and min_len <= path_len and path_len <= max_len
+                            and path_weight < max_weight):
                         list_paths.append(path_to_adj_vert)
 
                 if (new_path_to_adj_vert and not all_paths_too_long):
