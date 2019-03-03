@@ -44,14 +44,14 @@ There are three major methods and two utility methods.
 <p>The three major methods are: *dijkstra(), getWeightPath(), and getAllPathsBetween()*</p>
 <p>The two utility methods are: *modGraph() and modUndo()*</p>
 
-The dijkstra method is the traditional lowest cost path from a source to a target in a directed weighted graph. This
+The **_dijkstra_** method is the traditional lowest cost path from a source to a target in a directed weighted graph. This
 function is minimally modified to be able to exit early if the target vertex is reached
 
-The getWeightPath method takes a path and returns the weight of the path if the entirety of the path exists
+The **_getWeightPath_** method takes a path and returns the weight of the path if the entirety of the path exists
 within the graph. If no such path exists, it returns -1. Functionally, this simply looks at each adjacent
 pair of nodes and adds up the weight of the corresponding edge.
 
-The getAllPathsBetween method is a modified Breadth First Search. In this modification visited vertices are no longer
+The **_getAllPathsBetween_** method is a modified Breadth First Search. In this modification visited vertices are no longer
 marked visited. Since vertices are no longer marked visited there needed to be a new way to reduce the queue without missing
 potential paths. The solution I developed is create a dictionary whose keys are verticies that mapped to a set of paths
 whose final destination is the key. 
@@ -65,12 +65,12 @@ at least one new path was generated. And of the newly generated paths at least o
 path weight bound. Together, these modificaitons of BFS allows getAllPathsBetween to accurately and efficiently generated
 all possible paths between two points bounded by max path length or max path weight.
 
-The modGraph method takes a list of tuples each representing starting vertex, ending vertex, edge weight and modifies the
+The **_modGraph_** method takes a list of tuples each representing starting vertex, ending vertex, edge weight and modifies the
 graph either updating a weight, adding a new edge, or removing an edge. The ability to modify the graph allows an efficient
 way to compute new paths with consideration of the modification without generating an entirely new graph. Before the
-modificaiton is applied the current state of the graph is saved in a stack. This method is paired with modUndo().
+modificaiton is applied the current state of the graph is saved in a stack. This method is paired with modUndo.
 
-The modUndo method is called to undo what is done to the graph by the modGraph method. Simply pops the to saved state and
+The **_modUndo_** method is called to undo what is done to the graph by the modGraph method. Simply pops the to saved state and
 applies the saved state.
 
 #### train_route.py
@@ -79,16 +79,16 @@ Contains only one class, and that class is TrainRoutes. TrainRoutes class only u
 
 There are three major methods: *shortestPath(), distPath(), and numDiffPaths()*
 
-The shortestPath method in addition to simply lowest weight path using dijkstras provided by Graph, shortestPath can also 
+The **_shortestPath_** method in addition to simply computing lowest weight path using dijkstras provided by Graph, shortestPath can also 
 compute lowest weight round trip. Since dijkstras will return zero on the shortest path from A to A. Computing lowest weight
 round trip using dijkstras requires a modification in the following way. Find all inward edges towards the source, and duplicate those 
-edges to also point towards an artificial edge. Then call dijkstras to find the shortest path from the original source to 
-the artificial target. This allows for the discovery of the shortest round-trip.
+edges to also point towards an artificial vertex. Then call dijkstras to find the shortest path from the original source to 
+the artificial target. This allows for the discovery of the shortest round-trip with minimal additional computation.
 
-The distPath method modifies the output of getWeightPath method of Graph. In TrainRoutes if a path does not exists within
+The **_distPath_** method modifies the output of getWeightPath method of Graph. In TrainRoutes if a path does not exists within
 the graph disPath returns "NO SUCH ROUTE" instead of -1.
 
-The numDiffPaths method simply calls the getAllPathsBetween method of Graph but only returns the number of different paths, not
+The **_numDiffPaths_** method simply calls the getAllPathsBetween method of Graph but only returns the number of different paths, not
 all the paths.
 
 #### simple_util.py
