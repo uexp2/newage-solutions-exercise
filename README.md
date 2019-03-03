@@ -63,12 +63,11 @@ applies the saved state.
 
 Contains only one class, and that class is TrainRoutes. TrainRoutes class only uses the Graph class.
 
-There are three major methods:
-The three major methods are: *shortestPath(), distPath(), and numDiffPaths()*
+There are three major methods: *shortestPath(), distPath(), and numDiffPaths()*
 
-The shortestPath method in addition to simply using dijkstras provided by Graph, shortestPath can also compute shortest
-round trip. Since dijkstras will return zero on the shortest path from A to A. Computing shortest round trip using 
-dijkstras requires a modification in the following way. Find all inward edges towards the source, and duplicate those 
+The shortestPath method in addition to simply lowest weight path using dijkstras provided by Graph, shortestPath can also 
+compute lowest weight round trip. Since dijkstras will return zero on the shortest path from A to A. Computing lowest weight
+round trip using dijkstras requires a modification in the following way. Find all inward edges towards the source, and duplicate those 
 edges to also point towards an artificial edge. Then call dijkstras to find the shortest path from the original source to 
 the artificial target. This allows for the discovery of the shortest round-trip.
 
