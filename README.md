@@ -21,7 +21,9 @@ Contains only one class, the Graph class. Since train routing and path finding i
 I felt it was best to separate it to allow it to be more modular and extendable.
 
 There are three major methods and two utility methods.
+
 The three major methods are: *dijkstra(), getDistPath(), and getAllPathsBetween()*
+
 The two utility methods are: *modGraph() and modUndo()*
 
 The dijkstra method is the traditional lowest cost path from a source to a target in a directed weighted graph. This
