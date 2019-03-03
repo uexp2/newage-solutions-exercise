@@ -7,7 +7,7 @@ from train_route import TrainRoutes
 from simple_util import generateAdjacencyList
 
 def main():
-    adjacency_list = generateAdjacencyList("train-graph.txt")
+    adjacency_list = generateAdjacencyList("train-graph-1.txt")
     train_routes = TrainRoutes(adjacency_list)
     print("The Distance of the route A-B-C:", train_routes.distPath("A-B-C"))
 ```
