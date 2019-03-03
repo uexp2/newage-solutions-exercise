@@ -13,6 +13,8 @@ AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
 ```
 and then runs the the 10 example inputs.
 
+The above graph input exists in `train-graph-1.txt` file.
+
 ### Simple Use
 ```python
 from train_route import TrainRoutes
