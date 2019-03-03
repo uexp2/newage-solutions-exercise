@@ -160,7 +160,7 @@ def testDisconnectedNetwork():
     return all_pass
 
 def testOneWayNetwork():
-    adjacency_list = generateAdjacencyList(networks_directory+"/connected-by-one-way.txt")
+    adjacency_list = generateAdjacencyList(networks_directory + "/connected-by-one-way.txt")
     train_routes = TrainRoutes(adjacency_list)
 
     all_pass = []
@@ -311,7 +311,5 @@ def runTests():
     print(testTwoCylesOneOneway())
     print(testOneAlternatePath())
     
-
-
 if __name__ == "__main__":
     runTests()

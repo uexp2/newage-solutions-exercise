@@ -7,7 +7,7 @@ def readFile(filename):
     file.close()
     return list_strings
 
-def generateAdjacencyList(filename="train-graph-1.txt"):
+def generateAdjacencyList(filename):
     list_3tuple = []
     for string in readFile(filename):
         list_3tuple.append((string[0], string[1], float(string[2:])))
