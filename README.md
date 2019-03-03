@@ -35,8 +35,10 @@ The getAllPathsBetween() method is a modified Breadth First Search. In this modi
 marked visited. Since vertices are no longer marked visited there needed to be a new way to reduce the queue without missing
 potential paths. The solution I developed is create a dictionary whose keys are verticies that mapped to a set of paths
 whose final destination is the key. 
+```
             E.g {"A":{\["A", "B", "A"\], \["B", "C", "A"\], \["F", "A"\]},
                  "E":{\["F", "E"\], \["D", "E", "D", "E"\] }
+```
 This solution allowed me to keep track of paths that have been generated, systematically generate new paths, and easily 
 prevent duplication of paths. With the help of the previously mentioned dictionary the queue is only appended to if 
 at least one new path was generated. And of the newly generated paths at least one path is within the max stops or max 
