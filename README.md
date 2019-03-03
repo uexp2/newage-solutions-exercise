@@ -1,6 +1,18 @@
 # Newage-Solutions Exercise
 ## Overview
 
+### Sample Correctness
+
+Calling,
+```
+python main.py
+```
+will load the sample graph provided in the assignment. Specifically,
+```
+AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
+```
+and then runs the the 10 example inputs.
+
 ### Simple Use
 ```python
 from train_route import TrainRoutes
@@ -17,7 +29,7 @@ Output:
 The Distance of the route A-B-C: 9.0
 ```
 
-### Structure
+### Structure and Details
 
 This assignment is divided into 4 major files: *graph.py, train_route.py, simple_util.py, and tests.py*
 
