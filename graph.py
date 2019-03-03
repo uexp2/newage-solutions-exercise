@@ -75,7 +75,7 @@ class Graph:
                 min_vert = vertex
         return min_vert
 
-    def getDistPath(self, path):
+    def getWeightPath(self, path):
         '''
         @param: path Can be string or list or tuple
                         If List: [A,B,C]
@@ -140,7 +140,7 @@ class Graph:
                     last_vert_dict[adj_vert].add(path_to_adj_vert)
 
                     path_len = len(path_to_adj_vert) - 1
-                    path_weight = self.getDistPath(path_to_adj_vert)
+                    path_weight = self.getWeightPath(path_to_adj_vert)
 
                     all_paths_too_long = all_paths_too_long and (
                         path_len > max_len or path_weight >= max_weight)

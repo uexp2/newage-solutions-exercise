@@ -28,10 +28,10 @@ class TrainRoutes:
         return ret_dist_shortest
 
     def distPath(self, path):
-        dist_path = self.routes_graph.getDistPath(path)
+        dist_path = self.routes_graph.getWeightPath(path)
         if (dist_path < 0):
             return 'NO SUCH ROUTE'
-        return self.routes_graph.getDistPath(path)
+        return self.routes_graph.getWeightPath(path)
 
     def numDiffPaths(self, start, end, min_stops=0, max_stops=None, max_dist=None):
         all_paths = self.routes_graph.getAllPathsBetween(start, end, min_stops, max_stops, max_dist)
