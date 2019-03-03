@@ -1,6 +1,7 @@
 class NonExistantVertex(Exception):
     '''No such vertex found in graph'''
 
+
 class Graph:
     def __init__(self, adjacency_list):
         '''
@@ -33,8 +34,9 @@ class Graph:
         verticies = self.verticies.copy()
 
         if (source not in verticies or (target != None and target not in verticies)):
-            raise NonExistantVertex('Source or Target vertex does not exist in graph')
-        
+            raise NonExistantVertex(
+                'Source or Target vertex does not exist in graph')
+
         dist = {}
         prev = {}
         for vertex in verticies:
@@ -91,7 +93,7 @@ class Graph:
             except KeyError:
                 return -1
         return total_distance
-    
+
     def getNumDiffPaths(self, start, end, min_len=0, max_len=None, max_weight=None):
         '''
             If both max_len and max_weight are None, then max_len is set to number of 
@@ -107,7 +109,8 @@ class Graph:
             max_weight = float('inf')
 
         if (start not in self.verticies or end not in self.verticies):
-            raise NonExistantVertex('Starting or Ending vertex does not exist in graph')
+            raise NonExistantVertex(
+                'Starting or Ending vertex does not exist in graph')
         list_paths = []  # list of tuples
 
         # Key is vertex, Value is a set of tuples whos last element is the key
@@ -120,6 +123,9 @@ class Graph:
         while len(queue) != 0:
             focus = queue.pop(0)
             path_to_focus = last_vert_dict[focus]  # a set
+            if focus not in self.adjacnecy_only_dict:
+                # focus is dead end. No edge away from focus.
+                continue
             for adj_vert in self.adjacnecy_only_dict[focus]:
                 new_path_to_adj_vert = False
                 all_paths_too_long = True
@@ -132,31 +138,43 @@ class Graph:
                         continue
 
                     last_vert_dict[adj_vert].add(path_to_adj_vert)
-                    
+
                     path_len = len(path_to_adj_vert) - 1
                     path_weight = self.getDistPath(path_to_adj_vert)
 
-                    all_paths_too_long = all_paths_too_long and (path_len > max_len or path_weight >= max_weight)
-                    if (adj_vert == end 
-                        and min_len <= path_len and path_len <= max_len 
-                        and path_weight < max_weight):  # strictly less than as per instruction
+                    all_paths_too_long = all_paths_too_long and (
+                        path_len > max_len or path_weight >= max_weight)
+                    if (adj_vert == end
+                        and min_len <= path_len and path_len <= max_len
+                            and path_weight < max_weight):  # strictly less than as per instruction
                         list_paths.append(path_to_adj_vert)
 
                 if (new_path_to_adj_vert and not all_paths_too_long):
                     # At least one new path is generated.
                     # of the new paths, at least one is not too long
-                    queue.append(adj_vert)     
+                    queue.append(adj_vert)
 
         return list_paths
 
     def getAdjacencyDict(self):
         return self.adjacnecy_only_dict
-    
+
     def getEdgeWeightDict(self):
         return self.edge_weight_dict
 
     def modGraph(self, adjacency_list):
-        '''Adds the set of given edges to current graph'''
+        '''
+        Adds, Removes, or Edits the list of given edges to/from current graph.
+
+        If the weight of the edge is set to float('inf'), "inf", or is None,
+        then that edge will be removed if such an edge exists.
+        '''
+        if (len(adjacency_list) == 0):
+            # No mods provided, do nothing.
+            # None is needed for placeholder for symmetry
+            # even though no changes where made
+            self.previous_states.append(None)
+            return
         # Copy current state
         curr_state = {}
         curr_state['verticies'] = self.verticies.copy()
@@ -170,18 +188,33 @@ class Graph:
 
         # Modify current state
         for (start, end, weight) in adjacency_list:
-            self.verticies.add(start)
-            self.verticies.add(end)
-            self.edge_weight_dict[(start, end)] = weight
-            if (start not in self.adjacnecy_only_dict):
-                self.adjacnecy_only_dict[start] = set()
-            self.adjacnecy_only_dict[start].add(end)
-    
+            if (weight == float('inf') or weight == 'inf' or weight is None):
+                # remove edge from graph
+                if (start, end) in self.edge_weight_dict:
+                    del self.edge_weight_dict[(start, end)]
+                if start in self.adjacnecy_only_dict:
+                    self.adjacnecy_only_dict.discard(end)
+            else:
+                # add edge to graph
+                self.verticies.add(start)
+                self.verticies.add(end)
+                self.edge_weight_dict[(start, end)] = weight
+                if (start not in self.adjacnecy_only_dict):
+                    self.adjacnecy_only_dict[start] = set()
+                self.adjacnecy_only_dict[start].add(end)
+
     def modUndo(self):
+        '''Undo a graph modification if there exists a modification to undo.'''
         if (len(self.previous_states) == 0):
             return
 
         most_recent_prev_state = self.previous_states.pop()
+        if (most_recent_prev_state is None):
+            # Do nothing, in the past modGraph was called
+            # but no changes occured on the graph. Thus,
+            # a placeholder state was placed. Used to maintain
+            # symmetry.
+            return
         self.verticies = most_recent_prev_state['verticies']
         self.edge_weight_dict = most_recent_prev_state['edge_weights']
         self.adjacnecy_only_dict = most_recent_prev_state['adjacency_only']
