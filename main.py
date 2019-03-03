@@ -16,20 +16,20 @@ def main():
           train_routes.distPath("A-E-B-C-D"))
     print("5.  The Distance of the route A-E-D:    ",
           train_routes.distPath("A-E-D"))
-    print("6.  The number of trips starting at C and ending at C with max\
-          stops of 3:      ",
+    print("6.  The number of trips starting at C and ending at C with max" +
+          " stops of 3:      ",
           train_routes.numDiffPaths('C', 'C', max_stops=3))
-    print("7.  The number of trips starting at A and ending at C with\
-          exactly 4 stops:     ",
+    print("7.  The number of trips starting at A and ending at C with" +
+          " exactly 4 stops:     ",
           train_routes.numDiffPaths('A', 'C', min_stops=4, max_stops=4))
-    print("8.  The length of the shortest route in terms of distance from A\
-          to C:          ",
+    print("8.  The length of the shortest route in terms of distance from A" +
+          " to C:          ",
           train_routes.shortestPath('A', 'C'))
-    print("9.  The length of the shortest route in terms of distance from B\
-          to B:          ",
+    print("9.  The length of the shortest route in terms of distance from B" +
+          " to B:          ",
           train_routes.shortestPath('B', 'B'))
-    print("10. The number of different routes from C to C with a distance of\
-          less than 30: ",
+    print("10. The number of different routes from C to C with a distance of" +
+          " less than 30: ",
           train_routes.numDiffPaths('C', 'C', max_dist=30))
 
 
