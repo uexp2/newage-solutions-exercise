@@ -18,33 +18,36 @@ class Graph:
         # Key is vertex, Value is a set representing adjacent vertices
         self.adjacnecy_only_dict = {}
 
-        for (start, end, dist) in adjacency_list:
+        for (start, end, weight) in adjacency_list:
             self.verticies.add(start)
             self.verticies.add(end)
-            self.edge_weight_dict[(start, end)] = dist
+            self.edge_weight_dict[(start, end)] = weight
             if (start not in self.adjacnecy_only_dict):
                 self.adjacnecy_only_dict[start] = set()
             self.adjacnecy_only_dict[start].add(end)
 
-    def dijkstra(self, start, end=None):
+        # To keep track of history of modifications
+        self.previous_states = []
+
+    def dijkstra(self, source, target=None):
         verticies = self.verticies.copy()
 
-        if (start not in verticies or (end != None and end not in verticies)):
-            raise NonExistantVertex('Starting or Ending vertex does not exist in graph')
+        if (source not in verticies or (target != None and target not in verticies)):
+            raise NonExistantVertex('Source or Target vertex does not exist in graph')
         
         dist = {}
         prev = {}
         for vertex in verticies:
             dist[vertex] = float("inf")
             prev[vertex] = None
-        dist[start] = 0
+        dist[source] = 0
 
         # While set of vertices is not empty
         while len(verticies) != 0:
             min_vert = self._minDist(dist, verticies)
             verticies.remove(min_vert)
 
-            if (end == min_vert):
+            if (target == min_vert):
                 return (dist, prev)
 
             for (start, end), weight in self.edge_weight_dict.items():
@@ -62,6 +65,9 @@ class Graph:
         min_dist = float("inf")
         min_vert = None
         for vertex in vertices:
+            if (min_vert == None):
+                min_dist = dict_distances[vertex]
+                min_vert = vertex
             if (dict_distances[vertex] < min_dist):
                 min_dist = dict_distances[vertex]
                 min_vert = vertex
@@ -148,3 +154,34 @@ class Graph:
     
     def getEdgeWeightDict(self):
         return self.edge_weight_dict
+
+    def modGraph(self, adjacency_list):
+        '''Adds the set of given edges to current graph'''
+        # Copy current state
+        curr_state = {}
+        curr_state['verticies'] = self.verticies.copy()
+        curr_state['edge_weights'] = self.edge_weight_dict.copy()
+        curr_state['adjacency_only'] = {}
+        for vertex, adjacency_set in self.adjacnecy_only_dict.items():
+            curr_state['adjacency_only'][vertex] = adjacency_set.copy()
+
+        # Save copy of current state
+        self.previous_states.append(curr_state)
+
+        # Modify current state
+        for (start, end, weight) in adjacency_list:
+            self.verticies.add(start)
+            self.verticies.add(end)
+            self.edge_weight_dict[(start, end)] = weight
+            if (start not in self.adjacnecy_only_dict):
+                self.adjacnecy_only_dict[start] = set()
+            self.adjacnecy_only_dict[start].add(end)
+    
+    def modUndo(self):
+        if (len(self.previous_states) == 0):
+            return
+
+        most_recent_prev_state = self.previous_states.pop()
+        self.verticies = most_recent_prev_state['verticies']
+        self.edge_weight_dict = most_recent_prev_state['edge_weights']
+        self.adjacnecy_only_dict = most_recent_prev_state['adjacency_only']
