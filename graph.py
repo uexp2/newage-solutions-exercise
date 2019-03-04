@@ -84,12 +84,12 @@ class Graph:
         else:
             list_path = path.split('-')
         total_distance = 0
-        for i in range(len(list_path)-1):
-            start, end = list_path[i], list_path[i+1]
-            try:
+        try:
+            for i in range(len(list_path)-1):
+                start, end = list_path[i], list_path[i+1]
                 total_distance += self.edge_weight_dict[(start, end)]
-            except KeyError:
-                return -1
+        except KeyError:
+            return -1
         return total_distance
 
     def getAllPathsBetween(self,
