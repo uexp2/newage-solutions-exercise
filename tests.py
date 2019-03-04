@@ -310,6 +310,19 @@ def testOneAlternatePath():
     ret = train_routes.distPath("A-D-B-E")
     all_pass.append(expect == ret)
 
+    # Shortest path
+    expect = float('inf')
+    ret = train_routes.shortestPath("D", "D")
+    all_pass.append(expect == ret)
+
+    expect = float('inf')
+    ret = train_routes.shortestPath("E", "E")
+    all_pass.append(expect == ret)
+
+    expect = float('inf')
+    ret = train_routes.shortestPath("E", "A")
+    all_pass.append(expect == ret)
+
     return all_pass
 
 
