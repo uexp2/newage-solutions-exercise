@@ -1,4 +1,4 @@
-from graph import Graph
+from graph import Graph, NonExistantVertex
 
 
 class TrainRoutes:
@@ -20,12 +20,18 @@ class TrainRoutes:
 
             self.routes_graph.modGraph(
                 new_weighted_edges)  # apply modificaiton
-            ret_dist_shortest = self.routes_graph.dijkstra(
-                source, target_prime)[0][target_prime]
+            try:
+                ret_dist_shortest = self.routes_graph.dijkstra(
+                    source, target_prime)[0][target_prime]
+            except NonExistantVertex:
+                ret_dist_shortest = float('inf')
             self.routes_graph.modUndo()  # undo modification
         else:
-            ret_dist_shortest = self.routes_graph.dijkstra(source, target)[
-                0][target]
+            try:
+                ret_dist_shortest = self.routes_graph.dijkstra(source, target)[
+                    0][target]
+            except NonExistantVertex:
+                ret_dist_shortest = float('inf')
 
         return ret_dist_shortest
 
